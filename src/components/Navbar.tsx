@@ -19,11 +19,7 @@ export function Navbar() {
           </Link>
         </div>
 
-        <div className="ml-auto flex items-center gap-2">
-          <Button variant="default" size="sm">
-            <Play className="h-4 w-4 mr-2" />
-            Run
-          </Button>
+        <div className="ml-auto flex items-center"> 
           <Button variant="outline" size="sm">
             <Copy className="h-4 w-4 mr-2" />
             Copy

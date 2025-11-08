@@ -6,13 +6,23 @@ export const useEditorStore = create<EditorState>()(
   devtools(
     (set, get) => ({
       // Code state
-      code: `export default function Component() {
+      code: `import React from 'react';
+
+export default function Component() {
   return (
-    <div className="container mx-auto p-4">
-      <h1 className="text-2xl font-bold mb-4">Hello World</h1>
-      <p className="text-gray-600">This is a sample component that you can edit!</p>
-      <div className="mt-4 p-4 bg-blue-100 rounded">
-        <span className="text-blue-800">Click on any element to start editing its styles.</span>
+    <div style={{ maxWidth: '1200px', margin: '0 auto', padding: '16px' }}>
+      <h1 style={{ fontSize: '24px', fontWeight: 'bold', marginBottom: '16px' }}>Hello World</h1>
+      <p style={{ color: '#666' }}>This is a sample component that you can edit!</p>
+      <div style={{ marginTop: '16px', padding: '16px', backgroundColor: '#dbeafe', borderRadius: '8px' }}>
+        <span style={{ color: '#1e40af' }}>Click on any element to start editing its styles.</span>
+      </div>
+      <div style={{ marginTop: '16px', display: 'flex', gap: '8px' }}>
+        <button style={{ padding: '8px 16px', backgroundColor: '#3b82f6', color: 'white', border: 'none', borderRadius: '6px', cursor: 'pointer' }}>
+          Primary Button
+        </button>
+        <button>
+          Secondary Button
+        </button>
       </div>
     </div>
   );
