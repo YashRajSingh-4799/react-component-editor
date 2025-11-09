@@ -1,9 +1,42 @@
+"use client"
+
+import { useCallback } from "react"
 import Link from "next/link"
-import { Code2, Play, Copy } from "lucide-react"
-
+import { Code2, Copy } from "lucide-react"
 import { Button } from "@/components/ui/button"
+import { useToast } from "@/hooks/use-toast"
+import { useEditorStore } from "@/store/editor-store"
+import { TOAST_DURATION } from "@/constants/editor"
 
+/**
+ * Navbar Component
+ * Application header with branding and copy-to-clipboard functionality
+ */
 export function Navbar() {
+  const { toast } = useToast()
+  const code = useEditorStore((state) => state.code)
+
+  /**
+   * Copy code to clipboard and show success toast
+   */
+  const handleCopy = useCallback(async () => {
+    try {
+      await navigator.clipboard.writeText(code)
+      toast({
+        title: "Code copied!",
+        description: "The code has been copied to your clipboard.",
+        duration: TOAST_DURATION,
+      })
+    } catch (error) {
+      toast({
+        title: "Copy failed",
+        description: "Failed to copy code to clipboard.",
+        variant: "destructive",
+        duration: TOAST_DURATION,
+      })
+    }
+  }, [code, toast])
+
   return (
     <nav className="border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
       <div className="flex h-16 items-center px-6">
@@ -19,10 +52,10 @@ export function Navbar() {
           </Link>
         </div>
 
-        <div className="ml-auto flex items-center"> 
-          <Button variant="outline" size="sm">
+        <div className="ml-auto flex items-center">
+          <Button variant="outline" size="sm" onClick={handleCopy}>
             <Copy className="h-4 w-4 mr-2" />
-            Copy
+            Copy Code
           </Button>
         </div>
       </div>

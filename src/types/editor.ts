@@ -1,62 +1,73 @@
 export interface EditableStyles {
-  padding?: string;
-  margin?: string;
-  background?: string;
-  fontSize?: string;
-  fontFamily?: string;
-  fontWeight?: string;
+  padding?: string
+  margin?: string
+  background?: string
+  fontSize?: string
+  fontFamily?: string
+  fontWeight?: string
 }
 
 export interface ComputedStyles {
-  padding: string;
-  margin: string;
-  backgroundColor: string;
-  fontSize: string;
-  fontFamily: string;
-  fontWeight: string;
+  padding: string
+  margin: string
+  backgroundColor: string
+  fontSize: string
+  fontFamily: string
+  fontWeight: string
 }
 
 export interface SelectedNode {
-  nodeId: string;
-  element: HTMLElement;
-  computedStyles: ComputedStyles;
+  nodeId: string
+  element: HTMLElement
+  computedStyles: ComputedStyles
+}
+
+export interface PopoverPosition {
+  x: number
+  y: number
 }
 
 export interface EditorState {
-  // Source code string (original, unchanged during editing)
-  code: string;
-  setCode: (code: string) => void;
+  // Source code management
+  code: string
+  setCode: (code: string) => void
 
-  // Style overrides (separate from code)
-  styleOverrides: Record<string, Partial<EditableStyles>>;
-  updateStyleOverride: (nodeId: string, property: string, value: string) => void;
-  clearStyleOverrides: () => void;
+  // Style override management
+  styleOverrides: Record<string, Partial<EditableStyles>>
+  updateStyleOverride: (nodeId: string, property: string, value: string) => void
+  clearStyleOverrides: () => void
 
-  // Compiled component function
-  CompiledComponent: React.ComponentType | null;
-  setCompiledComponent: (component: React.ComponentType | null) => void;
+  // Component compilation
+  CompiledComponent: React.ComponentType | null
+  setCompiledComponent: (component: React.ComponentType | null) => void
 
-  // Currently selected element
-  selectedNode: SelectedNode | null;
-  selectNode: (nodeData: SelectedNode | null) => void;
-  clearSelection: () => void;
+  // Node selection
+  selectedNode: SelectedNode | null
+  selectNode: (nodeData: SelectedNode | null) => void
+  clearSelection: () => void
 
-  // Popover state
-  isPopoverOpen: boolean;
-  popoverPosition: { x: number; y: number } | null;
-  setPopoverState: (open: boolean, position?: { x: number; y: number } | null) => void;
+  // Popover management
+  isPopoverOpen: boolean
+  popoverPosition: PopoverPosition | null
+  setPopoverState: (open: boolean, position?: PopoverPosition | null) => void
 }
 
 export enum ErrorType {
   PARSE_ERROR = 'Syntax error in JSX',
   COMPILE_ERROR = 'Unable to compile component',
   RUNTIME_ERROR = 'Component crashed during render',
-  AST_ERROR = 'Unable to modify code structure'
+  AST_ERROR = 'Unable to modify code structure',
 }
 
 export interface EditorError {
-  type: ErrorType;
-  message: string;
-  line?: number;
-  column?: number;
+  type: ErrorType
+  message: string
+  line?: number
+  column?: number
+}
+
+export type StyleProperty = keyof EditableStyles
+
+export function isStyleProperty(prop: string): prop is StyleProperty {
+  return ['padding', 'margin', 'background', 'fontSize', 'fontFamily', 'fontWeight'].includes(prop)
 }

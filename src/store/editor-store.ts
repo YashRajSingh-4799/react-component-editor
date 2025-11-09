@@ -1,35 +1,16 @@
-import { create } from 'zustand';
-import { devtools } from 'zustand/middleware';
-import { EditorState, SelectedNode, EditableStyles } from '@/types/editor';
+import { create } from 'zustand'
+import { devtools } from 'zustand/middleware'
+import { EditorState } from '@/types/editor'
+import { DEFAULT_COMPONENT_CODE } from '@/constants/editor'
 
 export const useEditorStore = create<EditorState>()(
   devtools(
-    (set, get) => ({
-      // Code state
-      code: `import React from 'react';
-
-export default function Component() {
-  return (
-    <div style={{ maxWidth: '1200px', margin: '0 auto', padding: '16px' }}>
-      <h1 style={{ fontSize: '24px', fontWeight: 'bold', marginBottom: '16px' }}>Hello World</h1>
-      <p style={{ color: '#666' }}>This is a sample component that you can edit!</p>
-      <div style={{ marginTop: '16px', padding: '16px', backgroundColor: '#dbeafe', borderRadius: '8px' }}>
-        <span style={{ color: '#1e40af' }}>Click on any element to start editing its styles.</span>
-      </div>
-      <div style={{ marginTop: '16px', display: 'flex', gap: '8px' }}>
-        <button style={{ padding: '8px 16px', backgroundColor: '#3b82f6', color: 'white', border: 'none', borderRadius: '6px', cursor: 'pointer' }}>
-          Primary Button
-        </button>
-        <button>
-          Secondary Button
-        </button>
-      </div>
-    </div>
-  );
-}`,
+    (set) => ({
+      // Code state management
+      code: DEFAULT_COMPONENT_CODE,
       setCode: (code) => set({ code }),
 
-      // Style overrides
+      // Style overrides management
       styleOverrides: {},
       updateStyleOverride: (nodeId, property, value) =>
         set((state) => ({
@@ -43,17 +24,17 @@ export default function Component() {
         })),
       clearStyleOverrides: () => set({ styleOverrides: {} }),
 
-      // Component compilation
+      // Component compilation state
       CompiledComponent: null,
       setCompiledComponent: (component) => set({ CompiledComponent: component }),
 
-      // Selection state
+      // Node selection state
       selectedNode: null,
       selectNode: (nodeData) => set({ selectedNode: nodeData }),
       clearSelection: () =>
         set({ selectedNode: null, isPopoverOpen: false, popoverPosition: null }),
 
-      // Popover state
+      // Popover state management
       isPopoverOpen: false,
       popoverPosition: null,
       setPopoverState: (open, position = null) =>
@@ -66,13 +47,20 @@ export default function Component() {
       name: 'editor-store',
     }
   )
-);
+)
 
-// Selectors for better performance
-export const useCode = () => useEditorStore((state) => state.code);
-export const useStyleOverrides = () => useEditorStore((state) => state.styleOverrides);
-export const useSelectedNode = () => useEditorStore((state) => state.selectedNode);
-export const usePopoverState = () => useEditorStore((state) => ({
-  isOpen: state.isPopoverOpen,
-  position: state.popoverPosition,
-}));
+/** Get the current code from the editor */
+export const useCode = () => useEditorStore((state) => state.code)
+
+/** Get all style overrides */
+export const useStyleOverrides = () => useEditorStore((state) => state.styleOverrides)
+
+/** Get the currently selected node */
+export const useSelectedNode = () => useEditorStore((state) => state.selectedNode)
+
+/** Get the popover open state and position */
+export const usePopoverState = () =>
+  useEditorStore((state) => ({
+    isOpen: state.isPopoverOpen,
+    position: state.popoverPosition,
+  }))
